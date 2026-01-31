@@ -6,5 +6,8 @@ SPA consuming https://anapioficeandfire.com with:
 - NgRx state management
 - Mobile-first responsive UI
 
-## Setup
-TBD
+## Setup (frontend)
+cd frontend
+npm install
+npm start
+
