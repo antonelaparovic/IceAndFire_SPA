@@ -1,1 +1,25 @@
-<p>characters-list works!</p>
+<section class="page">
+    <h1>Characters</h1>
+
+    <div class="pager">
+        <button (click)="prevPage()" [disabled]="page === 1 || loading">Prev</button>
+        <span>Page {{ page }}</span>
+        <button (click)="nextPage()" [disabled]="loading">Next</button>
+    </div>
+
+    <p *ngIf="loading">Loading...</p>
+
+    <ul class="list" *ngIf="!loading">
+        <li *ngFor="let c of characters">
+            <a [routerLink]="['/characters', c.id]">
+                <strong>{{ c.name }}</strong>
+            </a>
+            <div class="meta">
+                <span *ngIf="c.gender">{{ c.gender }}</span>
+                <span *ngIf="c.culture">· {{ c.culture }}</span>
+            </div>
+        </li>
+    </ul>
+
+    <p *ngIf="!loading && characters.length === 0">No results.</p>
+</section>

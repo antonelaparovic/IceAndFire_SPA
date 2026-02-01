@@ -1,0 +1,19 @@
+<dl class="kv" *ngIf="data as d">
+    <ng-container *ngFor="let e of d | keyvalue">
+        <dt>{{ e.key }}</dt>
+
+        <dd>
+            <ng-container *ngIf="isArray(e.value); else scalar">
+                <ul class="list">
+                    <li *ngFor="let v of e.value">
+                        {{ v || '—' }}
+                    </li>
+                </ul>
+            </ng-container>
+
+            <ng-template #scalar>
+                <span>{{ e.value || '—' }}</span>
+            </ng-template>
+        </dd>
+    </ng-container>
+</dl>

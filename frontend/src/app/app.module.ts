@@ -11,6 +11,10 @@ import { CharactersListComponent } from './pages/characters-list/characters-list
 import { BooksListComponent } from './pages/books-list/books-list.component';
 import { HousesListComponent } from './pages/houses-list/houses-list.component';
 import { FavoritesComponent } from './pages/favorites/favorites.component';
+import { CharacterDetailComponent } from './pages/character-detail/character-detail.component';
+import { BookDetailComponent } from './pages/book-detail/book-detail.component';
+import { HouseDetailComponent } from './pages/house-detail/house-detail.component';
+import { KeyValueViewComponent } from './shared/key-value-view/key-value-view.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +25,11 @@ import { FavoritesComponent } from './pages/favorites/favorites.component';
     CharactersListComponent,
     BooksListComponent,
     HousesListComponent,
-    FavoritesComponent
+    FavoritesComponent,
+    CharacterDetailComponent,
+    BookDetailComponent,
+    HouseDetailComponent,
+    KeyValueViewComponent
   ],
   imports: [
     BrowserModule,

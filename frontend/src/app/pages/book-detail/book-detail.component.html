@@ -1,0 +1,12 @@
+<section class="page">
+    <a class="back" routerLink="/books">← Back to Books</a>
+
+    <p *ngIf="loading">Loading...</p>
+
+    <ng-container *ngIf="!loading && book">
+        <h1>{{ book.name }}</h1>
+        <app-key-value-view [data]="book"></app-key-value-view>
+    </ng-container>
+
+    <p *ngIf="!loading && !book">Not found.</p>
+</section>

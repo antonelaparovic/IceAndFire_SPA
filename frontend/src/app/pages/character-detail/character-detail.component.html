@@ -1,0 +1,12 @@
+<section class="page">
+    <a class="back" routerLink="/characters">← Back to Characters</a>
+
+    <p *ngIf="loading">Loading...</p>
+
+    <ng-container *ngIf="!loading && character">
+        <h1>{{ character.name }}</h1>
+        <app-key-value-view [data]="character"></app-key-value-view>
+    </ng-container>
+
+    <p *ngIf="!loading && !character">Not found.</p>
+</section>

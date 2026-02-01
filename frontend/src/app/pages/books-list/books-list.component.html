@@ -1,1 +1,17 @@
-<p>books-list works!</p>
+<section class="page">
+    <h1>Books</h1>
+
+    <p *ngIf="loading">Loading...</p>
+
+    <ul class="list" *ngIf="!loading">
+        <li *ngFor="let b of books">
+            <a [routerLink]="['/books', b.id]">
+                <strong>{{ b.name }}</strong>
+            </a>
+            <div class="meta">
+                <span *ngIf="b.authors?.length">{{ b.authors.join(', ') }}</span>
+                <span *ngIf="b.released">· {{ b.released | date:'yyyy-MM-dd' }}</span>
+            </div>
+        </li>
+    </ul>
+</section>
