@@ -15,6 +15,9 @@ import { CharacterDetailComponent } from './pages/character-detail/character-det
 import { BookDetailComponent } from './pages/book-detail/book-detail.component';
 import { HouseDetailComponent } from './pages/house-detail/house-detail.component';
 import { KeyValueViewComponent } from './shared/key-value-view/key-value-view.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,10 @@ import { KeyValueViewComponent } from './shared/key-value-view/key-value-view.co
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot({}, {}),
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument({ maxAge: 25 }),
   ],
   providers: [],
   bootstrap: [AppComponent]
