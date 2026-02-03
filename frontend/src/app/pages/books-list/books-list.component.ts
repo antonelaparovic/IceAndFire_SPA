@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { IceAndFireApiService } from '../../services/ice-and-fire-api.service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
 import { BookListItem } from '../../models/book';
+import * as Actions from '../../state/books/books.actions';
+import * as Selectors from '../../state/books/books.selectors';
 
 @Component({
   selector: 'app-books-list',
@@ -8,21 +12,13 @@ import { BookListItem } from '../../models/book';
   styleUrls: ['./books-list.component.scss'],
 })
 export class BooksListComponent implements OnInit {
-  books: BookListItem[] = [];
-  loading = true;
+  books$: Observable<BookListItem[]> = this.store.select(Selectors.selectBooksList);
+  loading$: Observable<boolean> = this.store.select(Selectors.selectBooksListLoading);
+  error$: Observable<string | null> = this.store.select(Selectors.selectBooksListError);
 
-  constructor(private readonly api: IceAndFireApiService) { }
+  constructor(private readonly store: Store) { }
 
   ngOnInit(): void {
-    this.api.getBooks().subscribe({
-      next: (items) => {
-        this.books = items;
-        this.loading = false;
-      },
-      error: () => {
-        this.books = [];
-        this.loading = false;
-      },
-    });
+    this.store.dispatch(Actions.loadBooks());
   }
 }

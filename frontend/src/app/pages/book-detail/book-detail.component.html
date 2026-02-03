@@ -1,12 +1,11 @@
 <section class="page">
     <a class="back" routerLink="/books">← Back to Books</a>
 
-    <p *ngIf="loading">Loading...</p>
+    <p *ngIf="loading$ | async">Loading..</p>
+    <p *ngIf="(error$ | async) as err" class="error">{{ err }}</p>
 
-    <ng-container *ngIf="!loading && book">
-        <h1>{{ book.name }}</h1>
-        <app-key-value-view [data]="book"></app-key-value-view>
+    <ng-container *ngIf="(book$ | async) as b">
+        <h1>{{ b.name || ('Book ' + bookId) }}</h1>
+        <app-key-value-view [data]="b"></app-key-value-view>
     </ng-container>
-
-    <p *ngIf="!loading && !book">Not found.</p>
 </section>

@@ -2,24 +2,21 @@
     <h1>Houses</h1>
 
     <div class="pager">
-        <button (click)="prevPage()" [disabled]="page === 1 || loading">Prev</button>
+        <button (click)="prevPage()" [disabled]="page === 1 || (loading$ | async)">Prev</button>
         <span>Page {{ page }}</span>
-        <button (click)="nextPage()" [disabled]="loading">Next</button>
+        <button (click)="nextPage()" [disabled]="loading$ | async">Next</button>
     </div>
 
-    <p *ngIf="loading">Loading...</p>
+    <p *ngIf="loading$ | async">Loading...</p>
+    <p *ngIf="(error$ | async) as err">{{ err }}</p>
 
-    <ul class="list" *ngIf="!loading">
-        <li *ngFor="let c of houses">
-            <a [routerLink]="['/houses', c.id]">
-                <strong>{{ c.name }}</strong>
-            </a>
+    <ul class="list" *ngIf="!(loading$ | async)">
+        <li *ngFor="let h of (houses$ | async)">
+            <a [routerLink]="['/houses', h.id]"><strong>{{ h.name }}</strong></a>
             <div class="meta">
-                <span *ngIf="c.region">{{ c.region }}</span>
-                <span *ngIf="c.words">· {{ c.words }}</span>
+                <span *ngIf="h.region">{{ h.region }}</span>
+                <span *ngIf="h.words"> · {{ h.words }}</span>
             </div>
         </li>
     </ul>
-
-    <p *ngIf="!loading && houses.length === 0">No results.</p>
 </section>

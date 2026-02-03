@@ -1,16 +1,15 @@
 <section class="page">
     <h1>Books</h1>
 
-    <p *ngIf="loading">Loading...</p>
+    <p *ngIf="loading$ | async">Loading...</p>
+    <p *ngIf="(error$ | async) as err">{{ err }}</p>
 
-    <ul class="list" *ngIf="!loading">
-        <li *ngFor="let b of books">
-            <a [routerLink]="['/books', b.id]">
-                <strong>{{ b.name }}</strong>
-            </a>
+    <ul class="list" *ngIf="!(loading$ | async)">
+        <li *ngFor="let b of (books$ | async)">
+            <a [routerLink]="['/books', b.id]"><strong>{{ b.name }}</strong></a>
             <div class="meta">
                 <span *ngIf="b.authors?.length">{{ b.authors.join(', ') }}</span>
-                <span *ngIf="b.released">· {{ b.released | date:'yyyy-MM-dd' }}</span>
+                <span *ngIf="b.released"> · {{ b.released | date:'yyyy-MM-dd' }}</span>
             </div>
         </li>
     </ul>

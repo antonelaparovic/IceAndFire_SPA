@@ -18,6 +18,12 @@ import { KeyValueViewComponent } from './shared/key-value-view/key-value-view.co
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { CharactersEffects } from './state/characters/characters.effects';
+import { charactersFeatureKey, charactersReducer } from './state/characters/characters.reducer';
+import { BooksEffects } from './state/books/books.effects';
+import { booksFeatureKey, booksReducer } from './state/books/books.reducer';
+import { housesFeatureKey, housesReducer } from './state/houses/houses.reducer';
+import { HousesEffects } from './state/houses/houses.effects';
 
 @NgModule({
   declarations: [
@@ -41,6 +47,12 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     StoreModule.forRoot({}, {}),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25 }),
+    StoreModule.forFeature(charactersFeatureKey, charactersReducer),
+    EffectsModule.forFeature([CharactersEffects]),
+    StoreModule.forFeature(booksFeatureKey, booksReducer),
+    EffectsModule.forFeature([BooksEffects]),
+    StoreModule.forFeature(housesFeatureKey, housesReducer),
+    EffectsModule.forFeature([HousesEffects]),
   ],
   providers: [],
   bootstrap: [AppComponent]

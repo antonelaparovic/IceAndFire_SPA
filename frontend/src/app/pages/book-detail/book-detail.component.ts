@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, switchMap, takeUntil } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
-import { IceAndFireApiService } from '../../services/ice-and-fire-api.service';
 import { BookDetails } from '../../models/book';
+import * as Actions from '../../state/books/books.actions';
+import * as Selectors from '../../state/books/books.selectors';
 
 @Component({
   selector: 'app-book-detail',
@@ -11,28 +14,30 @@ import { BookDetails } from '../../models/book';
   styleUrls: ['./book-detail.component.scss'],
 })
 export class BookDetailComponent implements OnInit, OnDestroy {
-  book: BookDetails | null = null;
-  loading = true;
+  bookId = '';
 
-  private destroy$ = new Subject<void>();
+  book$!: Observable<BookDetails | undefined>;
+  loading$!: Observable<boolean>;
+  error$!: Observable<string | null>;
 
-  constructor(private readonly route: ActivatedRoute, private readonly api: IceAndFireApiService) { }
+  private readonly destroy$ = new Subject<void>();
+
+  constructor(private readonly route: ActivatedRoute, private readonly store: Store) { }
 
   ngOnInit(): void {
+    this.loading$ = this.store.select(Selectors.selectBookDetailsLoading);
+    this.error$ = this.store.select(Selectors.selectBookDetailsError);
+
     this.route.paramMap
       .pipe(
-        switchMap(params => this.api.getBookById(params.get('id') || '')),
+        map(p => p.get('id') || ''),
         takeUntil(this.destroy$)
       )
-      .subscribe({
-        next: (data) => {
-          this.book = data;
-          this.loading = false;
-        },
-        error: () => {
-          this.book = null;
-          this.loading = false;
-        },
+      .subscribe(id => {
+        this.bookId = id;
+
+        this.book$ = this.store.select(Selectors.selectBookDetailsById(id));
+        this.store.dispatch(Actions.loadBookDetails({ id }));
       });
   }
 

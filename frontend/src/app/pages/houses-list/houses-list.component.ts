@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { IceAndFireApiService } from '../../services/ice-and-fire-api.service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
 import { HouseListItem } from '../../models/house';
+import * as Actions from '../../state/houses/houses.actions';
+import * as Selectors from '../../state/houses/houses.selectors';
 
 @Component({
   selector: 'app-houses-list',
@@ -8,41 +12,27 @@ import { HouseListItem } from '../../models/house';
   styleUrls: ['./houses-list.component.scss'],
 })
 export class HousesListComponent implements OnInit {
-  houses: HouseListItem[] = [];
-  loading = true;
+  houses$: Observable<HouseListItem[]> = this.store.select(Selectors.selectHousesList);
+  loading$: Observable<boolean> = this.store.select(Selectors.selectHousesListLoading);
+  error$: Observable<string | null> = this.store.select(Selectors.selectHousesListError);
 
   page = 1;
   pageSize = 20;
 
-  constructor(private readonly api: IceAndFireApiService) { }
+  constructor(private readonly store: Store) { }
 
   ngOnInit(): void {
-    this.load();
-  }
-
-  load(): void {
-    this.loading = true;
-
-    this.api.getHouses(this.page, this.pageSize).subscribe({
-      next: (items) => {
-        this.houses = items;
-        this.loading = false;
-      },
-      error: () => {
-        this.houses = [];
-        this.loading = false;
-      },
-    });
+    this.store.dispatch(Actions.loadHouses({ page: this.page, pageSize: this.pageSize }));
   }
 
   nextPage(): void {
     this.page++;
-    this.load();
+    this.store.dispatch(Actions.loadHouses({ page: this.page, pageSize: this.pageSize }));
   }
 
   prevPage(): void {
     if (this.page === 1) return;
     this.page--;
-    this.load();
+    this.store.dispatch(Actions.loadHouses({ page: this.page, pageSize: this.pageSize }));
   }
 }

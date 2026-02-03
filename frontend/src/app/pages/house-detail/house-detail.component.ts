@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, switchMap, takeUntil } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
-import { IceAndFireApiService } from '../../services/ice-and-fire-api.service';
 import { HouseDetails } from '../../models/house';
+import * as Actions from '../../state/houses/houses.actions';
+import * as Selectors from '../../state/houses/houses.selectors';
 
 @Component({
   selector: 'app-house-detail',
@@ -11,28 +14,30 @@ import { HouseDetails } from '../../models/house';
   styleUrls: ['./house-detail.component.scss'],
 })
 export class HouseDetailComponent implements OnInit, OnDestroy {
-  house: HouseDetails | null = null;
-  loading = true;
+  houseId = '';
 
-  private destroy$ = new Subject<void>();
+  house$!: Observable<HouseDetails | undefined>;
+  loading$!: Observable<boolean>;
+  error$!: Observable<string | null>;
 
-  constructor(private readonly route: ActivatedRoute, private readonly api: IceAndFireApiService) { }
+  private readonly destroy$ = new Subject<void>();
+
+  constructor(private readonly route: ActivatedRoute, private readonly store: Store) { }
 
   ngOnInit(): void {
+    this.loading$ = this.store.select(Selectors.selectHouseDetailsLoading);
+    this.error$ = this.store.select(Selectors.selectHouseDetailsError);
+
     this.route.paramMap
       .pipe(
-        switchMap(params => this.api.getHouseById(params.get('id') || '')),
+        map(p => p.get('id') || ''),
         takeUntil(this.destroy$)
       )
-      .subscribe({
-        next: (data) => {
-          this.house = data;
-          this.loading = false;
-        },
-        error: () => {
-          this.house = null;
-          this.loading = false;
-        },
+      .subscribe(id => {
+        this.houseId = id;
+
+        this.house$ = this.store.select(Selectors.selectHouseDetailsById(id));
+        this.store.dispatch(Actions.loadHouseDetails({ id }));
       });
   }
 

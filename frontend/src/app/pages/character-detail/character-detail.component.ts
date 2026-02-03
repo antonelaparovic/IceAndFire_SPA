@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, switchMap, takeUntil } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
-import { IceAndFireApiService } from '../../services/ice-and-fire-api.service';
 import { CharacterDetails } from '../../models/character';
+import * as Actions from '../../state/characters/characters.actions';
+import * as Selectors from '../../state/characters/characters.selectors';
 
 @Component({
   selector: 'app-character-detail',
@@ -11,28 +14,31 @@ import { CharacterDetails } from '../../models/character';
   styleUrls: ['./character-detail.component.scss'],
 })
 export class CharacterDetailComponent implements OnInit, OnDestroy {
-  character: CharacterDetails | null = null;
-  loading = true;
+  characterId = '';
 
-  private destroy$ = new Subject<void>();
+  character$!: Observable<CharacterDetails | undefined>;
+  loading$!: Observable<boolean>;
+  error$!: Observable<string | null>;
 
-  constructor(private readonly route: ActivatedRoute, private readonly api: IceAndFireApiService) { }
+  private readonly destroy$ = new Subject<void>();
+
+  constructor(private readonly route: ActivatedRoute, private readonly store: Store) { }
 
   ngOnInit(): void {
+    this.loading$ = this.store.select(Selectors.selectCharacterDetailsLoading);
+    this.error$ = this.store.select(Selectors.selectCharacterDetailsError);
+
     this.route.paramMap
       .pipe(
-        switchMap(params => this.api.getCharacterById(params.get('id') || '')),
+        map(p => p.get('id') || ''),
         takeUntil(this.destroy$)
       )
-      .subscribe({
-        next: (data) => {
-          this.character = data;
-          this.loading = false;
-        },
-        error: () => {
-          this.character = null;
-          this.loading = false;
-        },
+      .subscribe(id => {
+        this.characterId = id;
+
+        this.character$ = this.store.select(Selectors.selectCharacterDetailsById(id));
+
+        this.store.dispatch(Actions.loadCharacterDetails({ id }));
       });
   }
 
