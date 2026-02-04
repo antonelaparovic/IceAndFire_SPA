@@ -1,0 +1,39 @@
+<section class="page">
+    <h1>Favourites</h1>
+
+    <div class="section">
+        <h2>Characters</h2>
+        <p *ngIf="(characterIds$ | async)?.length === 0">No favourites yet.</p>
+
+        <ul class="list">
+            <li *ngFor="let id of (characterIds$ | async)">
+                <a [routerLink]="['/characters', id]">Character #{{ id }}</a>
+                <button (click)="removeCharacter(id)">Remove</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Books</h2>
+        <p *ngIf="(bookIds$ | async)?.length === 0">No favourites yet.</p>
+
+        <ul class="list">
+            <li *ngFor="let id of (bookIds$ | async)">
+                <a [routerLink]="['/books', id]">Book #{{ id }}</a>
+                <button (click)="removeBook(id)">Remove</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Houses</h2>
+        <p *ngIf="(houseIds$ | async)?.length === 0">No favourites yet.</p>
+
+        <ul class="list">
+            <li *ngFor="let id of (houseIds$ | async)">
+                <a [routerLink]="['/houses', id]">House #{{ id }}</a>
+                <button (click)="removeHouse(id)">Remove</button>
+            </li>
+        </ul>
+    </div>
+</section>

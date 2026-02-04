@@ -16,6 +16,9 @@
                 <span *ngIf="c.gender">{{ c.gender }}</span>
                 <span *ngIf="c.culture">· {{ c.culture }}</span>
             </div>
+            <button type="button" (click)="toggleFav(c.id)">
+                {{ (isFav$(c.id) | async) ? 'Remove' : 'Add' }}
+            </button>
         </li>
     </ul>
 </section>

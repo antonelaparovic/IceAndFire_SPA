@@ -10,7 +10,6 @@ import { LandingComponent } from './pages/landing/landing.component';
 import { CharactersListComponent } from './pages/characters-list/characters-list.component';
 import { BooksListComponent } from './pages/books-list/books-list.component';
 import { HousesListComponent } from './pages/houses-list/houses-list.component';
-import { FavoritesComponent } from './pages/favorites/favorites.component';
 import { CharacterDetailComponent } from './pages/character-detail/character-detail.component';
 import { BookDetailComponent } from './pages/book-detail/book-detail.component';
 import { HouseDetailComponent } from './pages/house-detail/house-detail.component';
@@ -24,6 +23,8 @@ import { BooksEffects } from './state/books/books.effects';
 import { booksFeatureKey, booksReducer } from './state/books/books.reducer';
 import { housesFeatureKey, housesReducer } from './state/houses/houses.reducer';
 import { HousesEffects } from './state/houses/houses.effects';
+import { favouritesFeatureKey, favouritesReducer } from './state/favourites/favourites.reducers';
+import { FavouritesComponent } from './pages/favourites/favourites.component';
 
 @NgModule({
   declarations: [
@@ -34,11 +35,12 @@ import { HousesEffects } from './state/houses/houses.effects';
     CharactersListComponent,
     BooksListComponent,
     HousesListComponent,
-    FavoritesComponent,
+    FavouritesComponent,
     CharacterDetailComponent,
     BookDetailComponent,
     HouseDetailComponent,
-    KeyValueViewComponent
+    KeyValueViewComponent,
+    FavouritesComponent
   ],
   imports: [
     BrowserModule,
@@ -53,6 +55,7 @@ import { HousesEffects } from './state/houses/houses.effects';
     EffectsModule.forFeature([BooksEffects]),
     StoreModule.forFeature(housesFeatureKey, housesReducer),
     EffectsModule.forFeature([HousesEffects]),
+    StoreModule.forFeature(favouritesFeatureKey, favouritesReducer),
   ],
   providers: [],
   bootstrap: [AppComponent]

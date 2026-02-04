@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 import { HouseListItem } from '../../models/house';
 import * as Actions from '../../state/houses/houses.actions';
 import * as Selectors from '../../state/houses/houses.selectors';
+import * as FavActions from '../../state/favourites/favourites.actions';
+import * as FavSelectors from '../../state/favourites/favourites.selectors';
 
 @Component({
   selector: 'app-houses-list',
@@ -34,5 +36,19 @@ export class HousesListComponent implements OnInit {
     if (this.page === 1) return;
     this.page--;
     this.store.dispatch(Actions.loadHouses({ page: this.page, pageSize: this.pageSize }));
+  }
+
+  isFav$(id: string) {
+    return this.store.select(FavSelectors.selectIsFavouriteHouse(id));
+  }
+
+  toggleFav(id: string): void {
+    this.isFav$(id).pipe(take(1)).subscribe(isFav => {
+      this.store.dispatch(
+        isFav
+          ? FavActions.removeFavouriteHouse({ id })
+          : FavActions.addFavouriteHouse({ id })
+      );
+    });
   }
 }

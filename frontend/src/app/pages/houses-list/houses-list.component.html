@@ -17,6 +17,10 @@
                 <span *ngIf="h.region">{{ h.region }}</span>
                 <span *ngIf="h.words"> · {{ h.words }}</span>
             </div>
+            <button type="button" (click)="toggleFav(h.id)">
+                {{ (isFav$(h.id) | async) ? 'Remove' : 'Add' }}
+            </button>
+
         </li>
     </ul>
 </section>
