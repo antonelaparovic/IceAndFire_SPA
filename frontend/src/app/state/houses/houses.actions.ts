@@ -30,3 +30,8 @@ export const loadHouseDetailsFailure = createAction(
     '[Houses] Load Details Failure',
     props<{ error: string }>()
 );
+export const setHousesQuery = createAction(
+    '[Houses] Set Query',
+    props<{ query: string }>()
+);
+

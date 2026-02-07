@@ -10,6 +10,8 @@
     <p *ngIf="loading$ | async">Loading...</p>
     <p *ngIf="(error$ | async) as err">{{ err }}</p>
 
+    <input class="search" type="text" [formControl]="search" placeholder="Search houses..." />
+
     <ul class="list" *ngIf="!(loading$ | async)">
         <li *ngFor="let h of (houses$ | async)">
             <a [routerLink]="['/houses', h.id]"><strong>{{ h.name }}</strong></a>

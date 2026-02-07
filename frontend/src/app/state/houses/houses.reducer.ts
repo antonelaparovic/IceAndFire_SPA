@@ -43,5 +43,9 @@ export const housesReducer = createReducer(
         ...state,
         detailsLoading: false,
         detailsError: error,
-    }))
+    })),
+    on(Actions.setHousesQuery, (state, { query }) => ({
+        ...state,
+        query,
+    })),
 );

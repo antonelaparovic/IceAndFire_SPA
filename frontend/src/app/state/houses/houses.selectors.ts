@@ -42,4 +42,29 @@ export const selectHouseDetailsError = createSelector(
     selectHousesState,
     s => s.detailsError
 );
+export const selectHousesQuery = createSelector(
+    selectHousesState,
+    s => s.query
+);
+
+export const selectFilteredHousesList = createSelector(
+    selectHousesList,
+    selectHousesQuery,
+    (list, q) => {
+        const query = (q || '').trim().toLowerCase();
+        if (!query) return list;
+
+        return list.filter(h => {
+            const name = (h.name || '').toLowerCase();
+            const region = (h.region || '').toLowerCase();
+            const words = (h.words || '').toLowerCase();
+            return (
+                name.includes(query) ||
+                region.includes(query) ||
+                words.includes(query)
+            );
+        });
+    }
+);
+
 

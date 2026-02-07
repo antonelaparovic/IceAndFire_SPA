@@ -9,6 +9,8 @@ export interface HousesState {
     detailsLoading: boolean;
     detailsError: string | null;
 
+    query: string;
+
     page: number;
     pageSize: number;
 }
@@ -22,6 +24,8 @@ export const initialHousesState: HousesState = {
     detailsLoading: false,
     detailsError: null,
 
+    query: '',
+    
     page: 1,
     pageSize: 20,
 };

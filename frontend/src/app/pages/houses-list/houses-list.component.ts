@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, take } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Observable, startWith, take } from 'rxjs';
 
 import { HouseListItem } from '../../models/house';
 import * as Actions from '../../state/houses/houses.actions';
 import * as Selectors from '../../state/houses/houses.selectors';
 import * as FavActions from '../../state/favourites/favourites.actions';
 import * as FavSelectors from '../../state/favourites/favourites.selectors';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-houses-list',
@@ -14,8 +15,11 @@ import * as FavSelectors from '../../state/favourites/favourites.selectors';
   styleUrls: ['./houses-list.component.scss'],
 })
 export class HousesListComponent implements OnInit {
-  houses$: Observable<HouseListItem[]> = this.store.select(Selectors.selectHousesList);
-  loading$: Observable<boolean> = this.store.select(Selectors.selectHousesListLoading);
+  houses$ = this.store.select(Selectors.selectFilteredHousesList);
+  loading$ = this.store.select(Selectors.selectHousesListLoading);
+
+  search = new FormControl<string>('', { nonNullable: true });
+
   error$: Observable<string | null> = this.store.select(Selectors.selectHousesListError);
 
   page = 1;
@@ -25,7 +29,18 @@ export class HousesListComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(Actions.loadHouses({ page: this.page, pageSize: this.pageSize }));
+
+    this.search.valueChanges
+      .pipe(
+        startWith(this.search.value),
+        debounceTime(200),
+        distinctUntilChanged()
+      )
+      .subscribe(value => {
+        this.store.dispatch(Actions.setHousesQuery({ query: value }));
+      });
   }
+
 
   nextPage(): void {
     this.page++;
