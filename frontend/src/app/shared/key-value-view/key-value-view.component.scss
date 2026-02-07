@@ -1,0 +1,52 @@
+.kv {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+  margin-top: 1rem;
+}
+
+.kv-item {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.kv-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.kv-card {
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(16, 24, 38, 0.45);
+  border-radius: var(--radius-lg);
+  padding: 0.9rem 1rem;
+  color: var(--text-primary);
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+/* Ako hoćeš da i array “li” izgledaju kao kartice */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.list li {
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(16, 24, 38, 0.45);
+  border-radius: var(--radius-lg);
+  padding: 0.9rem 1rem;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+@media (min-width: 900px) {
+  .kv {
+    grid-template-columns: 1fr 1fr;
+  }
+}

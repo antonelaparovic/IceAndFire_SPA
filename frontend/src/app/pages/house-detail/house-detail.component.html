@@ -1,11 +1,78 @@
 <section class="page">
     <a class="back" routerLink="/houses">← Back to Houses</a>
 
-    <p *ngIf="loading$ | async">Loading...</p>
+    <p *ngIf="loading$ | async">Loading..</p>
     <p *ngIf="(error$ | async) as err" class="error">{{ err }}</p>
 
     <ng-container *ngIf="(house$ | async) as h">
         <h1>{{ h.name || ('House ' + houseId) }}</h1>
-        <app-key-value-view [data]="h"></app-key-value-view>
+
+        <app-key-value-view [data]="(houseForView$ | async)"></app-key-value-view>
+
+        <section class="section">
+            <h2>Overlord</h2>
+            <p class="meta" *ngIf="!(overlordVm$ | async)">—</p>
+
+            <ul class="list" *ngIf="(overlordVm$ | async) as o">
+                <li *ngIf="o">
+                    <a [routerLink]="['/houses', o.id]"><strong>{{ o.name }}</strong></a>
+                    <div class="meta">ID: {{ o.id }}</div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Current Lord</h2>
+            <p class="meta" *ngIf="!(currentLordVm$ | async)">—</p>
+
+            <ul class="list" *ngIf="(currentLordVm$ | async) as cl">
+                <li *ngIf="cl">
+                    <a [routerLink]="['/characters', cl.id]"><strong>{{ cl.name }}</strong></a>
+                    <div class="meta">ID: {{ cl.id }}</div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Heir</h2>
+            <p class="meta" *ngIf="!(heirVm$ | async)">—</p>
+
+            <ul class="list" *ngIf="(heirVm$ | async) as heir">
+                <li *ngIf="heir">
+                    <a [routerLink]="['/characters', heir.id]"><strong>{{ heir.name }}</strong></a>
+                    <div class="meta">ID: {{ heir.id }}</div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="section" *ngIf="(cadetIds$ | async) as cadetIds">
+            <h2>Cadet branches</h2>
+            <p class="meta" *ngIf="cadetIds.length === 0">—</p>
+
+            <ul class="list" *ngIf="cadetIds.length > 0">
+                <li *ngFor="let hb of (cadetVm$ | async)">
+                    <a [routerLink]="['/houses', hb.id]"><strong>{{ hb.name }}</strong></a>
+                    <div class="meta">ID: {{ hb.id }}</div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="section" *ngIf="(swornIds$ | async) as swornIds">
+            <h2>Sworn members</h2>
+            <p class="meta" *ngIf="swornIds.length === 0">—</p>
+
+            <ul class="list" *ngIf="swornIds.length > 0">
+                <li *ngFor="let m of (visibleSwornVm$ | async)">
+                    <a [routerLink]="['/characters', m.id]"><strong>{{ m.name }}</strong></a>
+                    <div class="meta">ID: {{ m.id }}</div>
+                </li>
+            </ul>
+
+            <div class="load-more" *ngIf="swornIds.length > swornVisibleCountValue">
+                <button type="button" class="btn btn--primary" (click)="loadMoreSworn()">
+                    Load more ({{ swornIds.length - swornVisibleCountValue }})
+                </button>
+            </div>
+        </section>
     </ng-container>
 </section>

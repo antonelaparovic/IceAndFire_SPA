@@ -1,8 +1,8 @@
-<dl class="kv" *ngIf="data as d">
-    <ng-container *ngFor="let e of d | keyvalue">
-        <dt>{{ e.key }}</dt>
+<div class="kv" *ngIf="data as d">
+    <div class="kv-item" *ngFor="let e of d | keyvalue">
+        <div class="kv-label">{{ formatLabel(e.key) }}</div>
 
-        <dd>
+        <div class="kv-value">
             <ng-container *ngIf="isArray(e.value); else scalar">
                 <ul class="list">
                     <li *ngFor="let v of e.value">
@@ -12,8 +12,10 @@
             </ng-container>
 
             <ng-template #scalar>
-                <span>{{ e.value || '—' }}</span>
+                <div class="kv-card">
+                    {{ e.value || '—' }}
+                </div>
             </ng-template>
-        </dd>
-    </ng-container>
-</dl>
+        </div>
+    </div>
+</div>

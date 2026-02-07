@@ -2,11 +2,82 @@
     <a class="back" routerLink="/characters">← Back to Characters</a>
 
     <p *ngIf="loading$ | async">Loading...</p>
-
     <p *ngIf="(error$ | async) as err" class="error">{{ err }}</p>
 
     <ng-container *ngIf="(character$ | async) as c">
-        <h1>{{ c.name || ('Character ' + characterId) }}</h1>
-        <app-key-value-view [data]="c"></app-key-value-view>
+        <h1>{{ c.name || 'Unknown' }}</h1>
+
+        <!-- key-value, but without books/povBooks/allegiances/spouse -->
+        <app-key-value-view [data]="characterForView$ | async"></app-key-value-view>
+
+        <section class="section" *ngIf="bookIds$ | async as allIds">
+            <h2>Books</h2>
+
+            <p class="meta" *ngIf="allIds.length === 0">No books listed.</p>
+
+            <ul class="list" *ngIf="allIds.length > 0">
+                <li *ngFor="let b of (visibleBooksVm$ | async)">
+                    <a [routerLink]="['/books', b.id]"><strong>{{ b.name }}</strong></a>
+                    <div class="meta">ID: {{ b.id }}</div>
+                </li>
+            </ul>
+
+            <div class="load-more" *ngIf="allIds.length > booksVisibleCountValue">
+                <button type="button" class="btn btn--primary" (click)="loadMoreBooks()">
+                    Load more ({{ allIds.length - booksVisibleCountValue }})
+                </button>
+            </div>
+        </section>
+
+        <section class="section" *ngIf="povBookIds$ | async as povIds">
+            <h2>POV Books</h2>
+
+            <p class="meta" *ngIf="povIds.length === 0">No POV books listed.</p>
+
+            <ul class="list" *ngIf="povIds.length > 0">
+                <li *ngFor="let b of (visiblePovBooksVm$ | async)">
+                    <a [routerLink]="['/books', b.id]"><strong>{{ b.name }}</strong></a>
+                    <div class="meta">ID: {{ b.id }}</div>
+                </li>
+            </ul>
+
+            <div class="load-more" *ngIf="povIds.length > povBooksVisibleCountValue">
+                <button type="button" class="btn btn--primary" (click)="loadMorePovBooks()">
+                    Load more ({{ povIds.length - povBooksVisibleCountValue }})
+                </button>
+            </div>
+        </section>
+
+        <section class="section" *ngIf="houseIds$ | async as houseIds">
+            <h2>Allegiances</h2>
+
+            <p class="meta" *ngIf="houseIds.length === 0">No allegiances listed.</p>
+
+            <ul class="list" *ngIf="houseIds.length > 0">
+                <li *ngFor="let h of (visibleHousesVm$ | async)">
+                    <a [routerLink]="['/houses', h.id]"><strong>{{ h.name }}</strong></a>
+                    <div class="meta">ID: {{ h.id }}</div>
+                </li>
+            </ul>
+
+            <div class="load-more" *ngIf="houseIds.length > allegiancesVisibleCountValue">
+                <button type="button" class="btn btn--primary" (click)="loadMoreAllegiances()">
+                    Load more ({{ houseIds.length - allegiancesVisibleCountValue }})
+                </button>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Spouse</h2>
+
+            <p class="meta" *ngIf="!(spouseId$ | async)">No spouse listed.</p>
+
+            <ng-container *ngIf="spouseVm$ | async as s">
+                <div class="kv-card" *ngIf="s">
+                    <a [routerLink]="['/characters', s.id]"><strong>{{ s.name || 'Loading…' }}</strong></a>
+                    <div class="meta">ID: {{ s.id }}</div>
+                </div>
+            </ng-container>
+        </section>
     </ng-container>
 </section>
