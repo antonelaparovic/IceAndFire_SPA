@@ -26,6 +26,7 @@ import { HousesEffects } from './state/houses/houses.effects';
 import { favouritesFeatureKey, favouritesReducer } from './state/favourites/favourites.reducers';
 import { FavouritesComponent } from './pages/favourites/favourites.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SpinnerComponent } from './shared/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     HouseDetailComponent,
     KeyValueViewComponent,
     FavouritesComponent,
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,

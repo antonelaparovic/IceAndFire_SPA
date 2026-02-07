@@ -2,5 +2,11 @@
 
 <main class="app-container">
     <router-outlet></router-outlet>
-</main>
 
+    <div class="route-overlay" *ngIf="loading" aria-live="polite" aria-busy="true">
+        <div class="route-overlay_content">
+            <app-spinner></app-spinner>
+            <div class="route-overlay_text">Loading...</div>
+        </div>
+    </div>
+</main>

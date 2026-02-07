@@ -1,6 +1,10 @@
 <section class="page">
     <h1>Books</h1>
 
+    <div class="pager">
+        <span></span>
+    </div>
+
     <p *ngIf="loading$ | async">Loading...</p>
     <p *ngIf="(error$ | async) as err">{{ err }}</p>
     
