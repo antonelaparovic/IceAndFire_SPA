@@ -25,6 +25,7 @@ import { housesFeatureKey, housesReducer } from './state/houses/houses.reducer';
 import { HousesEffects } from './state/houses/houses.effects';
 import { favouritesFeatureKey, favouritesReducer } from './state/favourites/favourites.reducers';
 import { FavouritesComponent } from './pages/favourites/favourites.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -40,12 +41,13 @@ import { FavouritesComponent } from './pages/favourites/favourites.component';
     BookDetailComponent,
     HouseDetailComponent,
     KeyValueViewComponent,
-    FavouritesComponent
+    FavouritesComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    ReactiveFormsModule,
     StoreModule.forRoot({}, {}),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25 }),

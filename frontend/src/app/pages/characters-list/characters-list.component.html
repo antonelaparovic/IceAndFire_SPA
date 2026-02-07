@@ -9,6 +9,8 @@
 
     <p *ngIf="loading$ | async">Loading...</p>
 
+    <input class="search" type="text" [formControl]="search" placeholder="Search characters..." />
+
     <ul class="list" *ngIf="!(loading$ | async)">
         <li *ngFor="let c of (characters$ | async)">
             <a [routerLink]="['/characters', c.id]"><strong>{{ c.name }}</strong></a>

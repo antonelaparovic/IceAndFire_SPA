@@ -30,3 +30,9 @@ export const loadCharacterDetailsFailure = createAction(
     '[Characters] Load Details Failure',
     props<{ error: string }>()
 );
+
+export const setCharactersQuery = createAction(
+    '[Characters] Set Query',
+    props<{ query: string }>()
+);
+

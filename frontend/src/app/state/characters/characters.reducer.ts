@@ -43,5 +43,10 @@ export const charactersReducer = createReducer(
         ...state,
         detailsLoading: false,
         detailsError: error,
-    }))
+    })),
+    on(Actions.setCharactersQuery, (state, { query }) => ({
+        ...state,
+        query,
+    })),
+
 );

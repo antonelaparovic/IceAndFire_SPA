@@ -7,7 +7,8 @@ import * as Actions from '../../state/characters/characters.actions';
 import * as Selectors from '../../state/characters/characters.selectors';
 import * as FavActions from '../../state/favourites/favourites.actions';
 import * as FavSelectors from '../../state/favourites/favourites.selectors';
-import { take } from 'rxjs/operators';
+import { distinctUntilChanged, debounceTime, startWith, take } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-characters-list',
@@ -15,8 +16,13 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./characters-list.component.scss'],
 })
 export class CharactersListComponent implements OnInit {
-  characters$: Observable<CharacterListItem[]> = this.store.select(Selectors.selectCharactersList);
+  //characters$: Observable<CharacterListItem[]> = this.store.select(Selectors.selectCharactersList);
   loading$: Observable<boolean> = this.store.select(Selectors.selectCharactersListLoading);
+
+  characters$ = this.store.select(Selectors.selectFilteredCharactersList);
+  query$ = this.store.select(Selectors.selectCharactersQuery);
+
+  search = new FormControl<string>('', { nonNullable: true });
 
   page$: Observable<number> = this.store.select(Selectors.selectCharactersPage);
   pageSize$: Observable<number> = this.store.select(Selectors.selectCharactersPageSize);
@@ -28,7 +34,18 @@ export class CharactersListComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(Actions.loadCharacters({ page: this.page, pageSize: this.pageSize }));
+
+    this.search.valueChanges
+      .pipe(
+        startWith(this.search.value),
+        debounceTime(200),
+        distinctUntilChanged()
+      )
+      .subscribe(value => {
+        this.store.dispatch(Actions.setCharactersQuery({ query: value }));
+      });
   }
+
 
   nextPage(): void {
     this.page++;
