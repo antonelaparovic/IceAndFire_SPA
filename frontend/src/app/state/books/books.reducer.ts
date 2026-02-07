@@ -41,5 +41,9 @@ export const booksReducer = createReducer(
         ...state,
         detailsLoading: false,
         detailsError: error,
-    }))
+    })),
+    on(Actions.setBooksQuery, (state, { query }) => ({
+        ...state,
+        query,
+    })),
 );

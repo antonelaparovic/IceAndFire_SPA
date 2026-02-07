@@ -29,3 +29,9 @@ export const loadBooksDetailsFailure = createAction(
     '[Books] Load Details Failure',
     props<{ error: string }>()
 );
+
+export const setBooksQuery = createAction(
+    '[Books] Set Query',
+    props<{ query: string }>()
+);
+

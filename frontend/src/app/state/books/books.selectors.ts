@@ -42,4 +42,27 @@ export const selectBookDetailsError = createSelector(
     selectBooksState,
     s => s.detailsError
 );
+export const selectBooksQuery = createSelector(
+    selectBooksState,
+    s => s.query
+);
+
+export const selectFilteredBooksList = createSelector(
+    selectBooksList,
+    selectBooksQuery,
+    (list, q) => {
+        const query = (q || '').trim().toLowerCase();
+        if (!query) return list;
+
+        return list.filter(b => {
+            const name = (b.name || '').toLowerCase();
+            const authors = (b.authors || []).join(', ').toLowerCase();
+            return (
+                name.includes(query) ||
+                authors.includes(query)
+            );
+        });
+    }
+);
+
 

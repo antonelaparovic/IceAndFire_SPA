@@ -7,7 +7,8 @@ import * as Actions from '../../state/books/books.actions';
 import * as Selectors from '../../state/books/books.selectors';
 import * as FavActions from '../../state/favourites/favourites.actions';
 import * as FavSelectors from '../../state/favourites/favourites.selectors';
-import { take } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, startWith, take } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-books-list',
@@ -15,15 +16,28 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./books-list.component.scss'],
 })
 export class BooksListComponent implements OnInit {
-  books$: Observable<BookListItem[]> = this.store.select(Selectors.selectBooksList);
-  loading$: Observable<boolean> = this.store.select(Selectors.selectBooksListLoading);
-  error$: Observable<string | null> = this.store.select(Selectors.selectBooksListError);
+  books$ = this.store.select(Selectors.selectFilteredBooksList);
+  loading$ = this.store.select(Selectors.selectBooksListLoading);
+  error$ = this.store.select(Selectors.selectBooksListError);
+
+  search = new FormControl<string>('', { nonNullable: true });
 
   constructor(private readonly store: Store) { }
 
   ngOnInit(): void {
     this.store.dispatch(Actions.loadBooks());
+
+    this.search.valueChanges
+      .pipe(
+        startWith(this.search.value),
+        debounceTime(200),
+        distinctUntilChanged()
+      )
+      .subscribe(value => {
+        this.store.dispatch(Actions.setBooksQuery({ query: value }));
+      });
   }
+
   isFav$(id: string) {
     return this.store.select(FavSelectors.selectIsFavouriteBook(id));
   }
