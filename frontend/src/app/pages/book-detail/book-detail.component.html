@@ -23,9 +23,11 @@
                 </li>
             </ul>
 
-            <button type="button" *ngIf="allIds.length > visibleCountValue" (click)="loadMoreCharacters()">
-                Load more ({{ allIds.length - visibleCountValue }})
-            </button>
+            <div class="load-more" *ngIf="allIds.length > visibleCountValue">
+                <button type="button" class="btn btn--primary" (click)="loadMoreCharacters()">
+                    Load more ({{ allIds.length - visibleCountValue }})
+                </button>
+            </div>
         </section>
 
         <section class="section" *ngIf="povCharacterIds$ | async as povIds">
@@ -42,9 +44,11 @@
                 </li>
             </ul>
 
-            <button type="button" *ngIf="povIds.length > povVisibleCountValue" (click)="loadMorePovCharacters()">
-                Load more ({{ povIds.length - povVisibleCountValue }})
-            </button>
+            <div class="load-more" *ngIf="povIds.length > povVisibleCountValue">
+                <button type="button" class="btn btn--primary" (click)="loadMorePovCharacters()">
+                    Load more ({{ povIds.length - povVisibleCountValue }})
+                </button>
+            </div>
         </section>
     </ng-container>
 </section>
