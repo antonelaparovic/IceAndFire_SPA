@@ -1,11 +1,50 @@
 <section class="page">
     <a class="back" routerLink="/books">← Back to Books</a>
 
-    <p *ngIf="loading$ | async">Loading..</p>
+    <p *ngIf="loading$ | async">Loading...</p>
     <p *ngIf="(error$ | async) as err" class="error">{{ err }}</p>
 
     <ng-container *ngIf="(book$ | async) as b">
         <h1>{{ b.name || ('Book ' + bookId) }}</h1>
-        <app-key-value-view [data]="b"></app-key-value-view>
+
+        <app-key-value-view [data]="bookForView$ | async"></app-key-value-view>
+
+        <section class="section" *ngIf="characterIds$ | async as allIds">
+            <h2>Characters</h2>
+
+            <p class="meta" *ngIf="allIds.length === 0">No characters listed.</p>
+
+            <ul class="list" *ngIf="allIds.length > 0">
+                <li *ngFor="let c of (visibleCharactersVm$ | async)">
+                    <a [routerLink]="['/characters', c.id]">
+                        <strong>{{ c.name || 'Loading…' }}</strong>
+                    </a>
+                    <div class="meta">ID: {{ c.id }}</div>
+                </li>
+            </ul>
+
+            <button type="button" *ngIf="allIds.length > visibleCountValue" (click)="loadMoreCharacters()">
+                Load more ({{ allIds.length - visibleCountValue }})
+            </button>
+        </section>
+
+        <section class="section" *ngIf="povCharacterIds$ | async as povIds">
+            <h2>POV Characters</h2>
+
+            <p class="meta" *ngIf="povIds.length === 0">No POV characters listed.</p>
+
+            <ul class="list" *ngIf="povIds.length > 0">
+                <li *ngFor="let c of (povVisibleCharactersVm$ | async)">
+                    <a [routerLink]="['/characters', c.id]">
+                        <strong>{{ c.name || 'Loading…' }}</strong>
+                    </a>
+                    <div class="meta">ID: {{ c.id }}</div>
+                </li>
+            </ul>
+
+            <button type="button" *ngIf="povIds.length > povVisibleCountValue" (click)="loadMorePovCharacters()">
+                Load more ({{ povIds.length - povVisibleCountValue }})
+            </button>
+        </section>
     </ng-container>
 </section>
