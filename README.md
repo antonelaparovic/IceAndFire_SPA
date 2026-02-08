@@ -6,6 +6,9 @@ Single Page Application built with Angular + NgRx, using the public
 The application allows users to browse **Characters, Books and Houses** from the Game of Thrones universe, view detailed pages, and manage personal favourites after logging in.
 
 ---
+##  Prerequisits
+- Node.js
+- Angular CLI (v16)
 
 ## Features
 
