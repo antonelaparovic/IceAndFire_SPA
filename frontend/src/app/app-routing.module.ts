@@ -9,23 +9,25 @@ import { BookDetailComponent } from './pages/book-detail/book-detail.component';
 import { CharacterDetailComponent } from './pages/character-detail/character-detail.component';
 import { HouseDetailComponent } from './pages/house-detail/house-detail.component';
 import { FavouritesComponent } from './pages/favourites/favourites.component';
+import { AuthGuard } from './core/auth/auth.guard';
 
 const routes: Routes = [
+
+  { path: '', component: LandingComponent },
   {
     path: '',
     component: ShellComponent,
     children: [
-      { path: 'characters', component: CharactersListComponent },
-      { path: 'characters/:id', component: CharacterDetailComponent },
+      { path: 'characters', component: CharactersListComponent, canActivate: [AuthGuard] },
+      { path: 'characters/:id', component: CharacterDetailComponent, canActivate: [AuthGuard] },
 
-      { path: 'books', component: BooksListComponent },
-      { path: 'books/:id', component: BookDetailComponent },
+      { path: 'books', component: BooksListComponent, canActivate: [AuthGuard] },
+      { path: 'books/:id', component: BookDetailComponent, canActivate: [AuthGuard] },
 
-      { path: 'houses', component: HousesListComponent },
-      { path: 'houses/:id', component: HouseDetailComponent },
+      { path: 'houses', component: HousesListComponent, canActivate: [AuthGuard] },
+      { path: 'houses/:id', component: HouseDetailComponent, canActivate: [AuthGuard] },
 
-      { path: 'favourites', component: FavouritesComponent },
-      { path: '', component: LandingComponent },
+      { path: 'favourites', component: FavouritesComponent, canActivate: [AuthGuard] },
     ],
   },
   { path: '**', redirectTo: '' },

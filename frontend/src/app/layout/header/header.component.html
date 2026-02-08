@@ -6,5 +6,11 @@
         <a routerLink="/books" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Books</a>
         <a routerLink="/houses" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Houses</a>
         <a routerLink="/favourites" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Favourites</a>
+
+        <div class="spacer"></div>
+        
+        <button *ngIf="isLoggedIn" type="button" class="btn ghost" (click)="logout()">
+            Logout
+        </button>
     </nav>
 </header>

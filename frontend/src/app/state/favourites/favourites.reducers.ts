@@ -39,5 +39,11 @@ export const favouritesReducer = createReducer(
     on(Actions.removeFavouriteHouse, (s, { id }) => ({
         ...s,
         houseIds: removeOne(s.houseIds, id),
-    }))
+    })),
+    on(Actions.loadFavouritesFromApiSuccess, (state, { favourites }) => ({
+        ...state,
+        characterIds: favourites.characters,
+        bookIds: favourites.books,
+        houseIds: favourites.houses,
+    })),
 );

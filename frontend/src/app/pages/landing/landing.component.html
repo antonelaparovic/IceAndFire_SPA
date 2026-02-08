@@ -1,1 +1,34 @@
-<p>landing works!</p>
+<section class="page">
+    <h1>Ice & Fire</h1>
+
+    <div class="card">
+        <h2 *ngIf="!isLoggedIn">Login</h2>
+        <h2 *ngIf="isLoggedIn">You are logged in</h2>
+
+        <form *ngIf="!isLoggedIn" [formGroup]="form" (ngSubmit)="login()">
+            <label class="field">
+                <span>Email</span>
+                <input type="email" formControlName="email" />
+            </label>
+
+            <label class="field">
+                <span>Password</span>
+                <input type="password" formControlName="password" />
+            </label>
+
+            <p class="error" *ngIf="error">{{ error }}</p>
+
+            <button class="btn primary" type="submit" [disabled]="loading">
+                {{ loading ? 'Signing in...' : 'Login' }}
+            </button>
+
+            <p class="hint">
+                Use: <strong>user1@test.com</strong> / <strong>Password123!</strong>
+            </p>
+        </form>
+
+        <div *ngIf="isLoggedIn">
+            <button class="btn" type="button" (click)="logout()">Logout</button>
+        </div>
+    </div>
+</section>

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +28,8 @@ import { FavouritesComponent } from './pages/favourites/favourites.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { FavouriteButtonComponent } from './shared/favourite-button/favourite-button.component';
+import { AuthInterceptor } from './core/auth/auth.interceptor';
+import { FavouritesEffects } from './state/favourites/favourites.effects';
 
 @NgModule({
   declarations: [
@@ -62,8 +64,11 @@ import { FavouriteButtonComponent } from './shared/favourite-button/favourite-bu
     StoreModule.forFeature(housesFeatureKey, housesReducer),
     EffectsModule.forFeature([HousesEffects]),
     StoreModule.forFeature(favouritesFeatureKey, favouritesReducer),
+    EffectsModule.forFeature([FavouritesEffects]),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

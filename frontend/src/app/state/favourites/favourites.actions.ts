@@ -26,3 +26,17 @@ export const removeFavouriteHouse = createAction(
     '[Favourites] Remove House',
     props<{ id: string }>()
 );
+
+// for fav api
+export const loadFavouritesFromApi = createAction('[Favourites] Load From Api');
+export const loadFavouritesFromApiSuccess = createAction(
+    '[Favourites] Load From Api Success',
+    props<{ favourites: { characters: string[]; books: string[]; houses: string[] } }>()
+);
+export const loadFavouritesFromApiFailure = createAction(
+    '[Favourites] Load From Api Failure',
+    props<{ error: string }>()
+);
+
+export const persistFavouritesToApi = createAction('[Favourites] Persist To Api');
+
