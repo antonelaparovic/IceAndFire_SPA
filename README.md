@@ -63,6 +63,24 @@ The application allows users to browse **Characters, Books and Houses** from the
 - In-memory data storage
 - CORS enabled for local development
 
+## Test-Driven Development (TDD)
+
+The project follows Test-Driven Development (TDD) principles for core business logic and state management.
+
+Unit tests are written for:
+- NgRx reducers – validating state transitions and business rules
+- NgRx selectors – validating derived state and selector logic
+- NgRx effects – validating side effects, API interactions, and debouncing logic
+- Auth state – reducer and selector tests for authentication state
+
+Selectors are tested using their projector functions to ensure stability and avoid memoization-related issues.
+
+### Running Tests
+
+```
+ng test
+```
+
 ---
 
 ## Running the Project
