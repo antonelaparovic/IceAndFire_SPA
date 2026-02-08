@@ -1,0 +1,49 @@
+.fav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.85);
+
+  transition: transform 120ms ease, background 120ms ease, color 120ms ease;
+}
+
+.fav-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 1);
+}
+
+.fav-btn:active {
+  transform: scale(0.96);
+}
+
+.fav-btn:focus-visible {
+  outline: 2px solid rgba(120, 170, 255, 0.85);
+  outline-offset: 2px;
+}
+
+.fav-btn svg {
+  width: 22px;
+  height: 22px;
+  transition: transform 120ms ease, filter 120ms ease;
+}
+
+.fav-btn:hover svg {
+  transform: scale(1.06);
+}
+
+.fav-btn.is-active {
+  background: rgba(255, 90, 150, 0.12);
+  color: rgba(255, 90, 150, 1);
+}
+
+.fav-btn.is-active svg {
+  filter: drop-shadow(0 0 10px rgba(255, 90, 150, 0.35));
+}

@@ -27,6 +27,7 @@ import { favouritesFeatureKey, favouritesReducer } from './state/favourites/favo
 import { FavouritesComponent } from './pages/favourites/favourites.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
+import { FavouriteButtonComponent } from './shared/favourite-button/favourite-button.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { SpinnerComponent } from './shared/spinner/spinner.component';
     KeyValueViewComponent,
     FavouritesComponent,
     SpinnerComponent,
+    FavouriteButtonComponent,
   ],
   imports: [
     BrowserModule,

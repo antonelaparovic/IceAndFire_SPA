@@ -13,16 +13,17 @@
     <input class="search" type="text" [formControl]="search" placeholder="Search houses..." />
 
     <ul class="list" *ngIf="!(loading$ | async)">
-        <li *ngFor="let h of (houses$ | async)">
-            <a [routerLink]="['/houses', h.id]"><strong>{{ h.name }}</strong></a>
-            <div class="meta">
-                <span *ngIf="h.region">{{ h.region }}</span>
-                <span *ngIf="h.words"> · {{ h.words }}</span>
+        <li *ngFor="let h of (houses$ | async)" class="card-row">
+            <div class="card-content">
+                <a [routerLink]="['/houses', h.id]"><strong>{{ h.name }}</strong></a>
+                <div class="meta">
+                    <span *ngIf="h.region">{{ h.region }}</span>
+                    <span *ngIf="h.words"> · {{ h.words }}</span>
+                </div>
             </div>
-            <button type="button" (click)="toggleFav(h.id)">
-                {{ (isFav$(h.id) | async) ? 'Remove' : 'Add' }}
-            </button>
-
+            <app-favourite-button [active]="(isFav$(h.id) | async) === true"
+                [ariaLabel]="((isFav$(h.id) | async) ? 'Remove from favourites' : 'Add to favourites')" (toggle)="toggleFav(h.id)">
+            </app-favourite-button>
         </li>
     </ul>
 </section>

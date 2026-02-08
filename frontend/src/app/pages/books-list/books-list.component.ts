@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
-import { BookListItem } from '../../models/book';
 import * as Actions from '../../state/books/books.actions';
 import * as Selectors from '../../state/books/books.selectors';
 import * as FavActions from '../../state/favourites/favourites.actions';
