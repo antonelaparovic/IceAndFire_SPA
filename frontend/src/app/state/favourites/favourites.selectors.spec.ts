@@ -9,49 +9,35 @@ describe('favourites selectors', () => {
         houseIds: ['20', '21'],
     };
 
-    const rootState = {
-        [favouritesFeatureKey]: favState,
-    } as any;
-
-    it('selectFavouriteCharacterIds should return characterIds', () => {
-        expect(FavSelectors.selectFavouriteCharacterIds(rootState)).toEqual(['1', '2']);
+    it('selectFavouritesState should return feature state', () => {
+        const rootState = { [favouritesFeatureKey]: favState } as any;
+        expect(FavSelectors.selectFavouritesState(rootState)).toEqual(favState);
     });
 
-    it('selectFavouriteBookIds should return bookIds', () => {
-        expect(FavSelectors.selectFavouriteBookIds(rootState)).toEqual(['10']);
+    it('selectFavouriteCharacterIds projector should return characterIds', () => {
+        expect(FavSelectors.selectFavouriteCharacterIds.projector(favState)).toEqual(['1', '2']);
     });
 
-    it('selectFavouriteHouseIds should return houseIds', () => {
-        expect(FavSelectors.selectFavouriteHouseIds(rootState)).toEqual(['20', '21']);
+    it('selectFavouriteBookIds projector should return bookIds', () => {
+        expect(FavSelectors.selectFavouriteBookIds.projector(favState)).toEqual(['10']);
     });
 
-    it('selectIsFavouriteCharacter(id) should return true when id exists', () => {
-        const selector = FavSelectors.selectIsFavouriteCharacter('2');
-        expect(selector(rootState)).toBeTrue();
+    it('selectFavouriteHouseIds projector should return houseIds', () => {
+        expect(FavSelectors.selectFavouriteHouseIds.projector(favState)).toEqual(['20', '21']);
     });
 
-    it('selectIsFavouriteCharacter(id) should return false when id does not exist', () => {
-        const selector = FavSelectors.selectIsFavouriteCharacter('999');
-        expect(selector(rootState)).toBeFalse();
+    it('selectIsFavouriteCharacter(id) projector should return true/false', () => {
+        expect(FavSelectors.selectIsFavouriteCharacter('2').projector(['1', '2'])).toBeTrue();
+        expect(FavSelectors.selectIsFavouriteCharacter('999').projector(['1', '2'])).toBeFalse();
     });
 
-    it('selectIsFavouriteBook(id) should return true when id exists', () => {
-        const selector = FavSelectors.selectIsFavouriteBook('10');
-        expect(selector(rootState)).toBeTrue();
+    it('selectIsFavouriteBook(id) projector should return true/false', () => {
+        expect(FavSelectors.selectIsFavouriteBook('10').projector(['10'])).toBeTrue();
+        expect(FavSelectors.selectIsFavouriteBook('999').projector(['10'])).toBeFalse();
     });
 
-    it('selectIsFavouriteBook(id) should return false when id does not exist', () => {
-        const selector = FavSelectors.selectIsFavouriteBook('999');
-        expect(selector(rootState)).toBeFalse();
-    });
-
-    it('selectIsFavouriteHouse(id) should return true when id exists', () => {
-        const selector = FavSelectors.selectIsFavouriteHouse('21');
-        expect(selector(rootState)).toBeTrue();
-    });
-
-    it('selectIsFavouriteHouse(id) should return false when id does not exist', () => {
-        const selector = FavSelectors.selectIsFavouriteHouse('999');
-        expect(selector(rootState)).toBeFalse();
+    it('selectIsFavouriteHouse(id) projector should return true/false', () => {
+        expect(FavSelectors.selectIsFavouriteHouse('21').projector(['20', '21'])).toBeTrue();
+        expect(FavSelectors.selectIsFavouriteHouse('999').projector(['20', '21'])).toBeFalse();
     });
 });
