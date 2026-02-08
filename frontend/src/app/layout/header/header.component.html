@@ -1,16 +1,17 @@
 <header class="app-header">
-    <a routerLink="/" class="brand">Ice & Fire</a>
+    <a class="brand" routerLink="/characters">Ice & Fire</a>
+
+    <div class="spacer"></div>
 
     <nav class="nav">
-        <a routerLink="/characters" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Characters</a>
-        <a routerLink="/books" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Books</a>
-        <a routerLink="/houses" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Houses</a>
-        <a routerLink="/favourites" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Favourites</a>
-
-        <div class="spacer"></div>
-        
-        <button *ngIf="isLoggedIn" type="button" class="btn ghost" (click)="logout()">
-            Logout
-        </button>
+        <a routerLink="/characters" routerLinkActive="active">Characters</a>
+        <a routerLink="/books" routerLinkActive="active">Books</a>
+        <a routerLink="/houses" routerLinkActive="active">Houses</a>
+        <a routerLink="/favourites" routerLinkActive="active">Favourites</a>
     </nav>
+
+    <div class="user">
+        <span class="email" *ngIf="(userEmail$ | async) as email">{{ email }}</span>
+        <button class="btn-logout" type="button" (click)="logout()">Logout</button>
+    </div>
 </header>

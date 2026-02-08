@@ -1,34 +1,45 @@
 <section class="page">
-    <h1>Ice & Fire</h1>
+    <div class="shell">
+        <header class="hero">
+            <h1>Ice & Fire</h1>
+            <p class="subtitle">Log in to explore characters, books and houses.</p>
+        </header>
 
-    <div class="card">
-        <h2 *ngIf="!isLoggedIn">Login</h2>
-        <h2 *ngIf="isLoggedIn">You are logged in</h2>
+        <div class="card">
+            <h2 *ngIf="!isLoggedIn">Login</h2>
 
-        <form *ngIf="!isLoggedIn" [formGroup]="form" (ngSubmit)="login()">
-            <label class="field">
-                <span>Email</span>
-                <input type="email" formControlName="email" />
-            </label>
+            <form *ngIf="!isLoggedIn" [formGroup]="form" (ngSubmit)="login()">
+                <label class="field">
+                    <span>Email</span>
+                    <input type="email" formControlName="email" autocomplete="email" placeholder="name@example.com" />
+            
+                    <small class="field-error" *ngIf="showError(emailCtrl)">
+                        <ng-container *ngIf="emailCtrl.errors?.['required']">Email is required.</ng-container>
+                        <ng-container *ngIf="emailCtrl.errors?.['email']">Enter a valid email format (e.g.
+                            name@example.com).</ng-container>
+                    </small>
+                </label>
+            
+                <label class="field">
+                    <span>Password</span>
+                    <input type="password" formControlName="password" placeholder="••••••••" autocomplete="current-password" />
+            
+                    <small class="field-error" *ngIf="showError(passwordCtrl)">
+                        <ng-container *ngIf="passwordCtrl.errors?.['required']">Password is required.</ng-container>
+                    </small>
+                </label>
+            
+                <button class="btn primary" type="submit" [disabled]="loading || form.invalid">
+                    {{ loading ? 'Signing in...' : 'Login' }}
+                </button>
+            
+                <p class="error" *ngIf="error">{{ error }}</p>
+            </form>
 
-            <label class="field">
-                <span>Password</span>
-                <input type="password" formControlName="password" />
-            </label>
 
-            <p class="error" *ngIf="error">{{ error }}</p>
-
-            <button class="btn primary" type="submit" [disabled]="loading">
-                {{ loading ? 'Signing in...' : 'Login' }}
-            </button>
-
-            <p class="hint">
-                Use: <strong>user1@test.com</strong> / <strong>Password123!</strong>
-            </p>
-        </form>
-
-        <div *ngIf="isLoggedIn">
-            <button class="btn" type="button" (click)="logout()">Logout</button>
+            <div *ngIf="isLoggedIn" class="logged">
+                <button class="btn" type="button" (click)="logout()">Logout</button>
+            </div>
         </div>
     </div>
 </section>

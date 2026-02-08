@@ -30,6 +30,8 @@ import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { FavouriteButtonComponent } from './shared/favourite-button/favourite-button.component';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { FavouritesEffects } from './state/favourites/favourites.effects';
+import { AuthEffects } from './state/auth/auth.effects';
+import { authFeatureKey, authReducer } from './state/auth/auth.reducer';
 
 @NgModule({
   declarations: [
@@ -65,6 +67,8 @@ import { FavouritesEffects } from './state/favourites/favourites.effects';
     EffectsModule.forFeature([HousesEffects]),
     StoreModule.forFeature(favouritesFeatureKey, favouritesReducer),
     EffectsModule.forFeature([FavouritesEffects]),
+    StoreModule.forFeature(authFeatureKey, authReducer),
+    EffectsModule.forFeature([AuthEffects]),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

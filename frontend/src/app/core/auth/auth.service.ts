@@ -16,6 +16,7 @@ export interface AuthResponse {
 export class AuthService {
   private readonly API = environment.apiBaseUrl;
   private readonly TOKEN_KEY = 'icefire_token';
+  private readonly USER_KEY = 'icefire_user';
 
   constructor(private readonly http: HttpClient) { }
 
@@ -37,6 +38,24 @@ export class AuthService {
 
   clearToken(): void {
     localStorage.removeItem(this.TOKEN_KEY);
+  }
+
+  setUser(user: { id: string; email: string }): void {
+    localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+  }
+
+  getUser(): { id: string; email: string } | null {
+    const raw = localStorage.getItem(this.USER_KEY);
+    return raw ? JSON.parse(raw) : null;
+  }
+
+  clearUser(): void {
+    localStorage.removeItem(this.USER_KEY);
+  }
+
+  logout(): void {
+    this.clearToken();
+    this.clearUser();
   }
 
   isLoggedIn(): boolean {
