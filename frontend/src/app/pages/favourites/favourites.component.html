@@ -5,35 +5,53 @@
         <h2>Characters</h2>
         <p *ngIf="(characterIds$ | async)?.length === 0">No favourites yet.</p>
 
-        <ul class="list">
-            <li *ngFor="let id of (characterIds$ | async)">
-                <a [routerLink]="['/characters', id]">Character #{{ id }}</a>
-                <button (click)="removeCharacter(id)">Remove</button>
+        <ul class="list" *ngIf="(favCharactersVm$ | async) as items">
+            <li *ngFor="let c of items" class="card-row">
+                <div class="card-content">
+                    <a [routerLink]="['/characters', c.id]"><strong>{{ c.name }}</strong></a>
+                    <div class="meta">ID: {{ c.id }}</div>
+                </div>
+
+                <app-favourite-button [active]="true" ariaLabel="Remove from favourites"
+                    (toggle)="removeCharacter(c.id)"></app-favourite-button>
             </li>
         </ul>
+
     </div>
 
     <div class="section">
         <h2>Books</h2>
         <p *ngIf="(bookIds$ | async)?.length === 0">No favourites yet.</p>
 
-        <ul class="list">
-            <li *ngFor="let id of (bookIds$ | async)">
-                <a [routerLink]="['/books', id]">Book #{{ id }}</a>
-                <button (click)="removeBook(id)">Remove</button>
+        <ul class="list" *ngIf="(favBooksVm$ | async) as items">
+            <li *ngFor="let b of items" class="card-row">
+                <div class="card-content">
+                    <a [routerLink]="['/books', b.id]"><strong>{{ b.name }}</strong></a>
+                    <div class="meta">ID: {{ b.id }}</div>
+                </div>
+
+                <app-favourite-button [active]="true" ariaLabel="Remove from favourites"
+                    (toggle)="removeBook(b.id)"></app-favourite-button>
             </li>
         </ul>
+
     </div>
 
     <div class="section">
         <h2>Houses</h2>
         <p *ngIf="(houseIds$ | async)?.length === 0">No favourites yet.</p>
 
-        <ul class="list">
-            <li *ngFor="let id of (houseIds$ | async)">
-                <a [routerLink]="['/houses', id]">House #{{ id }}</a>
-                <button (click)="removeHouse(id)">Remove</button>
+        <ul class="list" *ngIf="(favHousesVm$ | async) as items">
+            <li *ngFor="let h of items" class="card-row">
+                <div class="card-content">
+                    <a [routerLink]="['/houses', h.id]"><strong>{{ h.name }}</strong></a>
+                    <div class="meta">ID: {{ h.id }}</div>
+                </div>
+
+                <app-favourite-button [active]="true" ariaLabel="Remove from favourites"
+                    (toggle)="removeHouse(h.id)"></app-favourite-button>
             </li>
         </ul>
+
     </div>
 </section>
