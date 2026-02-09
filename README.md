@@ -130,6 +130,11 @@ Application will be available at http://localhost:4200
 7. All pages except the Landing page are protected by an Auth Guard
 8. On Logout:
     - The JWT token is removed
-    - Favourites state is cleared
     - The user is redirected back to the Landing page
-
+9. To test features with differentu user, log in with credentials:
+  ```
+  email: user2@test.com
+  ```
+  ```
+  password: Password123!
+  ```
